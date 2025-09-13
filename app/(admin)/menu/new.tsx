@@ -1,4 +1,3 @@
-// app/restaurant/[restaurantId]/menu/add-item.tsx
 import { ModalSelector } from "@/src/components/ModalSelector";
 import { useCreateMenuItem, useMenuCategories } from "@/src/hooks/useMenu";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -18,7 +17,6 @@ const AddMenuItemScreen = () => {
       id: cat.id,
       label: cat.name,
     })) || [];
-  // Validación con Yup
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("El nombre es obligatorio"),
     description: Yup.string(),

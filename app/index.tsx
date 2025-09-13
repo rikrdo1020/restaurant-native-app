@@ -207,7 +207,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  // ✅ Estilos para botones personalizados
   customButton: {
     paddingVertical: 12,
     paddingHorizontal: 24,

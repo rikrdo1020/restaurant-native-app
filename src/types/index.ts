@@ -119,6 +119,13 @@ export interface CreateOrderRequest {
   notes?: string;
 }
 
+export type ConfirmOrderVars = {
+  p_order_id: string;
+  p_code: string;
+  p_staff_user_id: string;
+  p_table_number?: string | null;
+};
+
 export interface Order {
   id: string;
   code: string;
@@ -127,12 +134,12 @@ export interface Order {
   table_number?: string;
   total_amount: number;
   status:
-  | "pending"
-  | "confirmed"
-  | "preparing"
-  | "ready"
-  | "delivered"
-  | "cancelled";
+    | "pending"
+    | "confirmed"
+    | "preparing"
+    | "ready"
+    | "delivered"
+    | "cancelled";
   notes?: string;
   created_at: string;
 }

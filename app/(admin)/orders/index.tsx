@@ -47,7 +47,6 @@ export default function OrdersPage() {
   const updateOrderMutation = useUpdateOrderStatus();
   const cancelOrderMutation = useCancelOrder();
 
-  // Filtros de estado
   const statusOptions = [
     { value: "all", label: "Todos" },
     { value: "pending", label: "Pendientes" },
@@ -56,7 +55,6 @@ export default function OrdersPage() {
     { value: "delivered", label: "Entregados" },
   ];
 
-  // Actualizar estado de orden
   const handleUpdateStatus = async (
     orderId: string,
     newStatus: Order["status"]
@@ -75,7 +73,6 @@ export default function OrdersPage() {
     }
   };
 
-  // Cancelar orden
   const handleCancelOrder = async (orderId: string) => {
     try {
       await cancelOrderMutation.mutateAsync({
@@ -91,7 +88,6 @@ export default function OrdersPage() {
     }
   };
 
-  // Obtener color del estado
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
@@ -109,7 +105,6 @@ export default function OrdersPage() {
     }
   };
 
-  // Obtener texto del estado
   const getStatusText = (status: string) => {
     switch (status) {
       case "pending":
@@ -127,7 +122,6 @@ export default function OrdersPage() {
     }
   };
 
-  // Formatear fecha
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString("es-ES", {
@@ -139,7 +133,6 @@ export default function OrdersPage() {
     });
   };
 
-  // Manejar errores
   if (isError) {
     return (
       <View style={styles.errorContainer}>
@@ -162,7 +155,6 @@ export default function OrdersPage() {
 
   return (
     <View style={styles.container}>
-      {/* Header con estadísticas */}
       <View style={styles.header}>
         {statsLoading ? (
           <ActivityIndicator size="small" />
@@ -198,7 +190,6 @@ export default function OrdersPage() {
         )}
       </View>
 
-      {/* Barra de búsqueda */}
       <View style={styles.searchContainer}>
         <Searchbar
           placeholder="Buscar por mesa, cliente o ID..."
@@ -208,7 +199,6 @@ export default function OrdersPage() {
         />
       </View>
 
-      {/* Filtros de estado */}
       <View style={styles.filtersContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.chipContainer}>
@@ -226,7 +216,6 @@ export default function OrdersPage() {
         </ScrollView>
       </View>
 
-      {/* Lista de órdenes */}
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" />
@@ -251,7 +240,6 @@ export default function OrdersPage() {
             orders.map((order) => (
               <Card key={order.id} style={styles.orderCard}>
                 <Card.Content>
-                  {/* Header de la orden */}
                   <View style={styles.orderHeader}>
                     <View style={styles.orderInfo}>
                       <Text variant="titleMedium" style={styles.orderTitle}>
@@ -272,14 +260,12 @@ export default function OrdersPage() {
                     </Chip>
                   </View>
 
-                  {/* Información del cliente */}
                   {order.customer_name && (
                     <Text variant="bodyMedium" style={styles.customerName}>
                       Cliente: {order.customer_name}
                     </Text>
                   )}
 
-                  {/* Items de la orden */}
                   <View style={styles.itemsContainer}>
                     <Text variant="bodySmall" style={styles.itemsTitle}>
                       Items ({order.order_items.length}):
@@ -300,7 +286,6 @@ export default function OrdersPage() {
                     )}
                   </View>
 
-                  {/* Notas */}
                   {order.notes && (
                     <Text variant="bodySmall" style={styles.notes}>
                       Notas: {order.notes}
@@ -309,7 +294,6 @@ export default function OrdersPage() {
 
                   <Divider style={styles.divider} />
 
-                  {/* Footer con total y acciones */}
                   <View style={styles.orderFooter}>
                     <Text variant="titleMedium" style={styles.total}>
                       Total: ${order.total_amount.toFixed(2)}

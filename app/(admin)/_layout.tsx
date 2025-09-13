@@ -14,7 +14,7 @@ export default function AdminLayout() {
     } catch {
       router.replace("/");
     }
-  }
+  };
 
   useEffect(() => {
     if (!loading && !user) {
@@ -31,7 +31,7 @@ export default function AdminLayout() {
   }
 
   if (!user) {
-    return null; // Se redirigirá al login
+    return null;
   }
 
   return (
@@ -64,7 +64,6 @@ export default function AdminLayout() {
         name="restaurant/settings"
         options={{ title: "Configuración" }}
       />
-      <Stack.Screen name="orders/index" options={{ title: "Pedidos" }} />
     </Stack>
   );
 }

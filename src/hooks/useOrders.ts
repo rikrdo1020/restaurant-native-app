@@ -1,7 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient } from "../lib/queryClient";
 import { supabase } from "../lib/supabase";
-import { CreateOrderPayload, CreateOrderResponse } from "../types";
+import {
+  ConfirmOrderVars,
+  CreateOrderPayload,
+  CreateOrderResponse,
+} from "../types";
 
 export interface OrderItem {
   id: string;
@@ -171,7 +175,6 @@ export const useOrdersStats = () => {
 
 // 🔄 Hook para actualizar estado de orden
 export const useUpdateOrderStatus = () => {
-
   return useMutation({
     mutationFn: async ({
       orderId,
@@ -213,7 +216,6 @@ export const useUpdateOrderStatus = () => {
 
 // 🗑️ Hook para cancelar orden
 export const useCancelOrder = () => {
-
   return useMutation({
     mutationFn: async ({
       orderId,
@@ -250,17 +252,36 @@ export const useCancelOrder = () => {
 export function useCreateOrder() {
   return useMutation<CreateOrderResponse, Error, CreateOrderPayload>({
     mutationFn: async (payload) => {
-      const { data, error } = await supabase.rpc('create_order_for_checkout', payload);
+      const { data, error } = await supabase.rpc(
+        "create_order_for_checkout",
+        payload
+      );
       if (error) throw error;
 
       const normalized =
-        typeof data === 'string' ? JSON.parse(data) : (data as CreateOrderResponse);
+        typeof data === "string"
+          ? JSON.parse(data)
+          : (data as CreateOrderResponse);
 
       return normalized;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
+}
+
+export function useConfirmOrder() {
+  return useMutation({
+    mutationFn: async (vars: ConfirmOrderVars) => {
+      const { data, error } = await supabase.rpc("confirm_order", vars);
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order-stats"] });
     },
   });
 }

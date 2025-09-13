@@ -12,6 +12,7 @@ interface AuthContextType {
     userData: SignUpData
   ) => Promise<AuthResult>;
   signOut: () => Promise<void>;
+  loading: boolean;
 }
 
 interface AuthResult {
@@ -152,7 +153,6 @@ export const useAuthProvider = () => {
       setLoading(false);
     }
   };
-
 
   return {
     user,

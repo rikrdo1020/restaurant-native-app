@@ -21,7 +21,6 @@ import {
   TextInput,
 } from "react-native-paper";
 
-// Hooks simplificados para tu interface
 import {
   useCreateCategory,
   useDeleteMenuItem,
@@ -31,7 +30,6 @@ import {
   useUpdateMenuItem,
 } from "@/src/hooks/useMenu";
 
-// Interface actualizada según tu DB
 export interface MenuItem {
   id: string;
   restaurant_id: string;
@@ -67,7 +65,6 @@ export default function MenuManagementPage() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  // Estados para diálogos
   const [menuVisible, setMenuVisible] = useState<string | null>(null);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [categoryDialogVisible, setCategoryDialogVisible] = useState(false);
@@ -89,30 +86,23 @@ export default function MenuManagementPage() {
     restaurant_id: restaurantId,
   });
 
-  // 🎯 Query para obtener categorías
   const { data: categories = [], refetch: refetchCategories } =
     useMenuCategories(restaurantId);
 
-  // 🎯 Query para estadísticas
   const { data: stats, isLoading: statsLoading } = useMenuStats(restaurantId);
 
-  // 🔄 Mutation para actualizar item
   const updateItemMutation = useUpdateMenuItem();
 
-  // 🔄 Mutation para eliminar item
   const deleteItemMutation = useDeleteMenuItem();
 
-  // 🔄 Mutation para crear categoría
   const createCategoryMutation = useCreateCategory();
 
-  // Filtros de disponibilidad
   const availabilityOptions = [
     { value: undefined, label: "Todos" },
     { value: true, label: "Disponibles" },
     { value: false, label: "No Disponibles" },
   ];
 
-  // Alternar disponibilidad de item
   const handleToggleAvailability = async (item: MenuItem) => {
     try {
       await updateItemMutation.mutateAsync({
@@ -130,7 +120,6 @@ export default function MenuManagementPage() {
     }
   };
 
-  // Eliminar item
   const handleDeleteItem = async () => {
     if (!selectedItem) return;
 
@@ -147,7 +136,6 @@ export default function MenuManagementPage() {
     }
   };
 
-  // Crear nueva categoría
   const handleCreateCategory = async () => {
     if (!newCategoryName.trim()) return;
 
@@ -170,24 +158,20 @@ export default function MenuManagementPage() {
     }
   };
 
-  // Formatear precio
   const formatPrice = (price: number) => {
     return `$${price.toFixed(2)}`;
   };
 
-  // Obtener nombre de categoría
   const getCategoryName = (categoryId: string) => {
     const category = categories.find((cat) => cat.id === categoryId);
     return category?.name || "Sin categoría";
   };
 
-  // Refrescar datos
   const onRefresh = () => {
     refetchItems();
     refetchCategories();
   };
 
-  // Manejar errores
   if (itemsError) {
     return (
       <View style={styles.errorContainer}>
@@ -204,7 +188,6 @@ export default function MenuManagementPage() {
 
   return (
     <View style={styles.container}>
-      {/* Header con estadísticas */}
       <View style={styles.header}>
         {statsLoading ? (
           <ActivityIndicator size="small" />
@@ -240,7 +223,6 @@ export default function MenuManagementPage() {
         )}
       </View>
 
-      {/* Barra de búsqueda */}
       <View style={styles.searchContainer}>
         <Searchbar
           placeholder="Buscar items del menú..."
@@ -250,11 +232,9 @@ export default function MenuManagementPage() {
         />
       </View>
 
-      {/* Filtros */}
       <View style={styles.filtersContainer}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.chipContainer}>
-            {/* Filtro por categoría */}
             <Chip
               selected={categoryFilter === "all"}
               onPress={() => setCategoryFilter("all")}
@@ -276,7 +256,6 @@ export default function MenuManagementPage() {
 
             <Divider style={styles.verticalDivider} />
 
-            {/* Filtro por disponibilidad */}
             {availabilityOptions.map((option) => (
               <Chip
                 key={option.label}
@@ -291,7 +270,6 @@ export default function MenuManagementPage() {
         </ScrollView>
       </View>
 
-      {/* Lista de items */}
       {itemsLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" />
@@ -443,7 +421,6 @@ export default function MenuManagementPage() {
         </ScrollView>
       )}
 
-      {/* FABs */}
       <View style={styles.fabContainer}>
         <FAB
           icon="plus"
@@ -462,7 +439,6 @@ export default function MenuManagementPage() {
         />
       </View>
 
-      {/* Dialog para eliminar item */}
       <Portal>
         <Dialog
           visible={deleteDialogVisible}
@@ -471,8 +447,8 @@ export default function MenuManagementPage() {
           <Dialog.Title>Eliminar Item</Dialog.Title>
           <Dialog.Content>
             <Text variant="bodyMedium">
-              ¿Estás seguro de que quieres eliminar &quot;{selectedItem?.name}&quot;? Esta
-              acción no se puede deshacer.
+              ¿Estás seguro de que quieres eliminar &quot;{selectedItem?.name}
+              &quot;? Esta acción no se puede deshacer.
             </Text>
           </Dialog.Content>
           <Dialog.Actions>
@@ -488,7 +464,6 @@ export default function MenuManagementPage() {
           </Dialog.Actions>
         </Dialog>
 
-        {/* Dialog para crear categoría */}
         <Dialog
           visible={categoryDialogVisible}
           onDismiss={() => setCategoryDialogVisible(false)}
@@ -525,7 +500,6 @@ export default function MenuManagementPage() {
         </Dialog>
       </Portal>
 
-      {/* Snackbar para notificaciones */}
       <Snackbar
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}

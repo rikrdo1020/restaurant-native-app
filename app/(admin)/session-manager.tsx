@@ -1,4 +1,3 @@
-// src/components/admin/SessionsManager.tsx
 import { queryClient } from "@/src/lib/queryClient";
 import { supabase } from "@/src/lib/supabase";
 import { ActiveSession } from "@/src/types";
@@ -12,8 +11,6 @@ export default function SessionsManager({
 }: {
   restaurantId: string;
 }) {
-
-  // Obtener sesiones activas
   const { data: sessions, isLoading } = useQuery({
     queryKey: ["active-sessions", restaurantId],
     queryFn: async () => {
@@ -23,15 +20,14 @@ export default function SessionsManager({
       if (error) throw error;
       return data as ActiveSession[];
     },
-    refetchInterval: 30000, // Actualizar cada 30 segundos
+    refetchInterval: 30000,
   });
 
-  // Cerrar sesión remotamente
   const terminateSessionMutation = useMutation({
     mutationFn: async (sessionId: string) => {
       const { data, error } = await supabase.rpc("terminate_user_session", {
         p_session_id: sessionId,
-        p_terminated_by: "current-admin-user-id", // TODO: Obtener del contexto
+        p_terminated_by: "current-admin-user-id",
         p_reason: "admin_force",
       });
       if (error) throw error;
