@@ -6,15 +6,21 @@ import { useAuth } from "../../src/hooks/useAuth";
 
 export default function AdminLayout() {
   const router = useRouter();
-  const { user, loading, signOut } = useAuth();
+  const { user, loading } = useAuth();
 
-  console.log(loading);
+  const handleBack = () => {
+    try {
+      router.back();
+    } catch {
+      router.replace("/");
+    }
+  }
 
   useEffect(() => {
     if (!loading && !user) {
       router.replace("/auth/login" as any);
     }
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   if (loading) {
     return (
@@ -43,28 +49,15 @@ export default function AdminLayout() {
             icon="arrow-left"
             iconColor="#2e2e2e"
             size={24}
-            onPress={() => router.back()}
-            style={{ marginLeft: Platform.OS === "ios" ? 0 : -8 }}
+            onPress={handleBack}
+            style={{ marginLeft: Platform.OS === "ios" ? 4 : -8 }}
           />
         ),
       }}
     >
       <Stack.Screen
         name="dashboard"
-        options={{
-          title: "",
-          headerLeft: () => (
-            <IconButton
-              icon="menu"
-              iconColor="#363636"
-              size={24}
-              onPress={() => {
-                // Aquí puedes abrir un drawer o menú
-                console.log("Abrir menú");
-              }}
-            />
-          ),
-        }}
+        options={{ title: "Panel de Administración" }}
       />
       <Stack.Screen name="menu/index" options={{ title: "Gestión de Menú" }} />
       <Stack.Screen

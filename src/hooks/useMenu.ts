@@ -1,4 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "../lib/queryClient";
 import { supabase } from "../lib/supabase";
 import { MenuCategory, MenuFilters, MenuItem } from "../types";
 
@@ -33,7 +34,6 @@ export const useMenuItems = (filters: MenuFilters = {}) => {
   return useQuery({
     queryKey: ["menu-items", filters],
     queryFn: async (): Promise<MenuItem[]> => {
-      console.log(filters);
       let query = supabase
         .from("menu_items")
         .select(
@@ -158,7 +158,6 @@ export const useMenuStats = (restaurantId?: string) => {
 
 // 🔄 Hook para crear categoría
 export const useCreateCategory = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (categoryData: {
@@ -192,7 +191,6 @@ export const useCreateCategory = () => {
 
 // 🔄 Hook para actualizar categoría
 export const useUpdateCategory = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -227,7 +225,6 @@ export const useUpdateCategory = () => {
 
 // 🔄 Hook para crear item del menú
 export const useCreateMenuItem = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (itemData: {
@@ -241,7 +238,6 @@ export const useCreateMenuItem = () => {
       allergens?: string[];
       position?: number;
     }) => {
-      console.log(itemData);
       const { data, error } = await supabase
         .from("menu_items")
         .insert({
@@ -267,7 +263,6 @@ export const useCreateMenuItem = () => {
 
 // 🔄 Hook para actualizar item del menú
 export const useUpdateMenuItem = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -305,7 +300,6 @@ export const useUpdateMenuItem = () => {
 
 // 🗑️ Hook para eliminar item del menú
 export const useDeleteMenuItem = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (itemId: string) => {
@@ -329,7 +323,6 @@ export const useDeleteMenuItem = () => {
 
 // 🗑️ Hook para eliminar categoría
 export const useDeleteCategory = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (categoryId: string) => {

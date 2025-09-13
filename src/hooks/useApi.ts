@@ -1,23 +1,24 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "../lib/queryClient";
 import { supabase } from "../lib/supabase";
-import { Category, CreateOrderRequest, Restaurant } from "../types";
+import { Category, CreateOrderRequest } from "../types";
 
 // Hook para obtener restaurante por slug
-export function useRestaurant(slug: string) {
+export function useRestaurant(slug?: string) {
   return useQuery({
-    queryKey: ["restaurant", slug],
+    queryKey: ['restaurant', slug],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("restaurants")
-        .select("*")
-        .eq("slug", slug)
-        .eq("active", true)
+      console.log('[useRestaurant] queryFn start slug=', slug);
+      if (!slug) throw new Error('slug missing');
+      const res = await supabase
+        .from('restaurants')
+        .select('id, name, description, slug')
+        .eq('slug', slug)
+        .eq('active', true)
         .single();
-
-      if (error) throw error;
-      return data as Restaurant;
+      if (res.error) throw res.error;
+      return res.data;
     },
-    enabled: !!slug,
   });
 }
 
@@ -70,7 +71,6 @@ export function useMenu(restaurantId: string) {
 
 // Hook para crear pedido
 export function useCreateOrder() {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (orderData: CreateOrderRequest) => {

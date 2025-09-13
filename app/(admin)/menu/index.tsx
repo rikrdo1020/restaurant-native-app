@@ -21,6 +21,16 @@ import {
   TextInput,
 } from "react-native-paper";
 
+// Hooks simplificados para tu interface
+import {
+  useCreateCategory,
+  useDeleteMenuItem,
+  useMenuCategories,
+  useMenuItems,
+  useMenuStats,
+  useUpdateMenuItem,
+} from "@/src/hooks/useMenu";
+
 // Interface actualizada según tu DB
 export interface MenuItem {
   id: string;
@@ -42,16 +52,6 @@ export interface MenuCategory {
   active: boolean;
   restaurant_id: string;
 }
-
-// Hooks simplificados para tu interface
-import {
-  useCreateCategory,
-  useDeleteMenuItem,
-  useMenuCategories,
-  useMenuItems,
-  useMenuStats,
-  useUpdateMenuItem,
-} from "@/src/hooks/useMenu";
 
 export default function MenuManagementPage() {
   const router = useRouter();
@@ -124,7 +124,7 @@ export default function MenuManagementPage() {
         `${item.name} ${!item.available ? "activado" : "desactivado"}`
       );
       setSnackbarVisible(true);
-    } catch (error) {
+    } catch {
       setSnackbarMessage("Error al actualizar el item");
       setSnackbarVisible(true);
     }
@@ -141,7 +141,7 @@ export default function MenuManagementPage() {
       setSnackbarVisible(true);
       setDeleteDialogVisible(false);
       setSelectedItem(null);
-    } catch (error) {
+    } catch {
       setSnackbarMessage("Error al eliminar el item");
       setSnackbarVisible(true);
     }
@@ -164,7 +164,7 @@ export default function MenuManagementPage() {
       setCategoryDialogVisible(false);
       setNewCategoryName("");
       setNewCategoryDescription("");
-    } catch (error) {
+    } catch {
       setSnackbarMessage("Error al crear la categoría");
       setSnackbarVisible(true);
     }
@@ -471,7 +471,7 @@ export default function MenuManagementPage() {
           <Dialog.Title>Eliminar Item</Dialog.Title>
           <Dialog.Content>
             <Text variant="bodyMedium">
-              ¿Estás seguro de que quieres eliminar "{selectedItem?.name}"? Esta
+              ¿Estás seguro de que quieres eliminar &quot;{selectedItem?.name}&quot;? Esta
               acción no se puede deshacer.
             </Text>
           </Dialog.Content>

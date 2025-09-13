@@ -1,14 +1,15 @@
 import { OrderSummary } from "@/src/components/OrderSumary";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { Button, Divider, FAB, Text } from "react-native-paper";
-import { CartItem } from "../../../src/components/CartItem";
+import { CartItem as CartItemType } from "../../../src/components/CartItem";
 import { useCart } from "../../../src/hooks/useCart";
 
 export default function CartScreen() {
   // 🔄 Cambio: useRouter en lugar de navigation prop
   const router = useRouter();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
 
   const { items, getTotal, getItemCount, clearCart } = useCart();
 
@@ -68,7 +69,7 @@ export default function CartScreen() {
           <View style={{ marginBottom: 24 }}>
             {items.map((item, index) => (
               <View key={`${item.menu_item_id}-${index}`}>
-                <CartItem item={item} />
+                <CartItemType item={item} />
                 {index < items.length - 1 && (
                   <Divider style={{ marginVertical: 12 }} />
                 )}
@@ -108,8 +109,7 @@ export default function CartScreen() {
           bottom: 0,
           backgroundColor: "#ff6347",
         }}
-        // 🔄 Cambio: router.push en lugar de navigation.navigate
-        onPress={() => router.push("/checkout" as any)}
+        onPress={() => router.replace(`/restaurant/${slug}/checkout`)}
       />
     </View>
   );

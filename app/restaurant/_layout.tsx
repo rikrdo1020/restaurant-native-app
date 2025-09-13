@@ -12,7 +12,7 @@ export default function RestaurantLayout() {
     >
       {/* ✅ Rutas dinámicas del restaurante */}
       <Stack.Screen
-        name="[restaurantId]"
+        name="[slug]"
         options={{
           title: "Restaurante",
         }}

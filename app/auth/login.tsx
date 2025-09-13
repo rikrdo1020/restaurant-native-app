@@ -46,7 +46,7 @@ export default function LoginScreen() {
       const result = await signIn(values.email, values.password);
 
       if (result.success) {
-        router.replace("/");
+        router.replace("/dashboard");
       } else {
         setSnackbar({
           visible: true,

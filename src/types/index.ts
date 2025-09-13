@@ -97,6 +97,20 @@ export interface CartItem {
   notes?: string;
 }
 
+export type CreateOrderPayload = {
+  p_restaurant_id: string;
+  p_guest_name?: string | null;
+  p_items: any;
+  p_notes?: string | null;
+};
+
+export type CreateOrderResponse = {
+  order_id: string;
+  code?: string | null;
+  total?: number | null;
+  skipped_items?: any[] | null;
+};
+
 export interface CreateOrderRequest {
   restaurant_id: string;
   guest_name: string;
@@ -113,12 +127,12 @@ export interface Order {
   table_number?: string;
   total_amount: number;
   status:
-    | "pending"
-    | "confirmed"
-    | "preparing"
-    | "ready"
-    | "delivered"
-    | "cancelled";
+  | "pending"
+  | "confirmed"
+  | "preparing"
+  | "ready"
+  | "delivered"
+  | "cancelled";
   notes?: string;
   created_at: string;
 }

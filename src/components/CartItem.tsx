@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from "react-native";
-import { Text, IconButton, TextInput, Card } from "react-native-paper";
-import { CartItem as CartItemType } from "../lib/supabase";
+import { Card, IconButton, Text, TextInput } from "react-native-paper";
 import { useCart } from "../hooks/useCart";
+import { CartItem as CartItemType } from "../types";
 
 interface Props {
   item: CartItemType;

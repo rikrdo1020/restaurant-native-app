@@ -1,27 +1,29 @@
-import { useAuth, useAuthProvider } from "@/src/hooks/useAuth";
+import { useAuthProvider } from "@/src/hooks/useAuth";
+import { useMenuItems } from "@/src/hooks/useMenu";
+import { useOrders, useOrdersStats } from "@/src/hooks/useOrders";
+import { useUserRestaurants } from "@/src/hooks/useUserQueries";
 import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Card, FAB, IconButton, Text } from "react-native-paper";
+import { ActivityIndicator, Button, Card, Text } from "react-native-paper";
 
 export default function DashboardScreen() {
   const router = useRouter();
-  const { user, loading, signOut } = useAuth();
-  const { userRestaurants } = useAuthProvider();
+  const { user } = useAuthProvider();
+  const { data: userRestaurantsData, isLoading: userRestaurantsLoading } = useUserRestaurants(user?.id || "");
 
-  console.log(user);
+  const { data: ordersData } = useOrders({
+    status: "pending"
+  })
+  const { data: ordersStatsData, isLoading: isOrdersLoading } = useOrdersStats();
+  const { data: menuData, isLoading: isLoadingMenu } = useMenuItems();
+
+  if (isOrdersLoading || isLoadingMenu || userRestaurantsLoading) return <ActivityIndicator style={{ margin: 16 }} />;
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-        <IconButton
-          icon={"arrow-left"}
-          size={24}
-          onPress={() => router.back()}
-          style={styles.backButton}
-        />
-        <Text variant="headlineLarge" style={styles.title}>
-          Dashboard
-        </Text>
+
         <Text variant="bodyLarge" style={styles.subtitle}>
           Bienvenido de vuelta,
         </Text>
@@ -31,7 +33,7 @@ export default function DashboardScreen() {
           <Card style={styles.statCard}>
             <Card.Content>
               <Text variant="headlineMedium" style={styles.statNumber}>
-                127
+                {ordersStatsData?.todayTotal || 0}
               </Text>
               <Text variant="bodyMedium">Pedidos Hoy</Text>
             </Card.Content>
@@ -40,7 +42,7 @@ export default function DashboardScreen() {
           <Card style={styles.statCard}>
             <Card.Content>
               <Text variant="headlineMedium" style={styles.statNumber}>
-                $2,450
+                $ {ordersStatsData?.todayRevenue || 0}
               </Text>
               <Text variant="bodyMedium">Ventas Hoy</Text>
             </Card.Content>
@@ -49,7 +51,7 @@ export default function DashboardScreen() {
           <Card style={styles.statCard}>
             <Card.Content>
               <Text variant="headlineMedium" style={styles.statNumber}>
-                45
+                {menuData?.length || 0}
               </Text>
               <Text variant="bodyMedium">Items en Menú</Text>
             </Card.Content>
@@ -63,18 +65,20 @@ export default function DashboardScreen() {
           </Text>
 
           <View style={styles.actionsGrid}>
-            <Button
-              mode="contained"
-              onPress={() =>
-                router.push(
-                  `/(admin)/menu?restaurantId=${userRestaurants[0]?.restaurant_id}` as any
-                )
-              }
-              style={styles.actionButton}
-              contentStyle={{ paddingVertical: 12 }}
-            >
-              Gestionar Menú
-            </Button>
+            {userRestaurantsData?.length === 1 && (
+              <Button
+                mode="contained"
+                onPress={() =>
+                  router.push(
+                    `/(admin)/menu?restaurantId=${userRestaurantsData[0]?.restaurant_id}` as any
+                  )
+                }
+                style={styles.actionButton}
+                contentStyle={{ paddingVertical: 12 }}
+              >
+                Gestionar Menú
+              </Button>
+            )}
 
             <Button
               mode="contained"
@@ -102,29 +106,32 @@ export default function DashboardScreen() {
             Pedidos Recientes
           </Text>
 
-          <Card style={styles.orderCard}>
-            <Card.Content>
-              <Text variant="titleMedium">Pedido #1234</Text>
-              <Text variant="bodyMedium">Mesa 5 • $45.50 • Hace 5 min</Text>
-            </Card.Content>
-          </Card>
+          {ordersData?.length === 0 && (
+            <Text variant="bodyMedium" style={{ opacity: 0.7 }}>
+              No hay pedidos recientes.
+            </Text>
+          )}
 
-          <Card style={styles.orderCard}>
-            <Card.Content>
-              <Text variant="titleMedium">Pedido #1233</Text>
-              <Text variant="bodyMedium">Mesa 2 • $32.00 • Hace 12 min</Text>
-            </Card.Content>
-          </Card>
+          {ordersData?.map(order => (
+            <Card key={order.id} style={styles.orderCard}>
+              <Card.Content>
+                <Text variant="titleMedium">Pedido {order.id}</Text>
+                <Text variant="bodyMedium">Mesa {order.table_number} • ${order.total_amount} • Hace 5 min</Text>
+              </Card.Content>
+            </Card>
+          ))}
         </View>
       </ScrollView>
 
       {/* Preview Restaurant Button */}
-      <FAB
+      {/* <FAB
         icon="eye"
         label="Ver Restaurante"
-        onPress={() => router.push("/restaurant/demo")}
+        onPress={() =>
+          router.replace(`/restaurant/${userRestaurants[0]?.restaurant_slug}`)
+        }
         style={styles.fab}
-      />
+      /> */}
     </View>
   );
 }

@@ -1,5 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "../lib/queryClient";
 import { supabase } from "../lib/supabase";
+import { CreateOrderPayload, CreateOrderResponse } from "../types";
 
 export interface OrderItem {
   id: string;
@@ -169,7 +171,6 @@ export const useOrdersStats = () => {
 
 // 🔄 Hook para actualizar estado de orden
 export const useUpdateOrderStatus = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -212,7 +213,6 @@ export const useUpdateOrderStatus = () => {
 
 // 🗑️ Hook para cancelar orden
 export const useCancelOrder = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
@@ -247,62 +247,20 @@ export const useCancelOrder = () => {
 };
 
 // 📝 Hook para crear nueva orden
-export const useCreateOrder = () => {
-  const queryClient = useQueryClient();
+export function useCreateOrder() {
+  return useMutation<CreateOrderResponse, Error, CreateOrderPayload>({
+    mutationFn: async (payload) => {
+      const { data, error } = await supabase.rpc('create_order_for_checkout', payload);
+      if (error) throw error;
 
-  return useMutation({
-    mutationFn: async (orderData: {
-      table_number: number;
-      customer_name?: string;
-      notes?: string;
-      items: Array<{
-        menu_item_id: string;
-        quantity: number;
-        price: number;
-      }>;
-    }) => {
-      // Calcular total
-      const total_amount = orderData.items.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      );
+      const normalized =
+        typeof data === 'string' ? JSON.parse(data) : (data as CreateOrderResponse);
 
-      // Crear orden
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .insert({
-          table_number: orderData.table_number,
-          customer_name: orderData.customer_name,
-          notes: orderData.notes,
-          total_amount,
-          status: "pending",
-        })
-        .select()
-        .single();
-
-      if (orderError) {
-        throw new Error(`Error creating order: ${orderError.message}`);
-      }
-
-      // Crear items de la orden
-      const orderItems = orderData.items.map((item) => ({
-        ...item,
-        order_id: order.id,
-      }));
-
-      const { error: itemsError } = await supabase
-        .from("order_items")
-        .insert(orderItems);
-
-      if (itemsError) {
-        throw new Error(`Error creating order items: ${itemsError.message}`);
-      }
-
-      return order;
+      return normalized;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["orders"] });
-      queryClient.invalidateQueries({ queryKey: ["orders-stats"] });
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
     },
   });
-};
+}

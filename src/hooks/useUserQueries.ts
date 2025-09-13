@@ -1,4 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "../lib/queryClient";
 import { supabase } from "../lib/supabase";
 import { UserProfile, UserRestaurant } from "../types";
 
@@ -58,7 +59,6 @@ export const useUserRestaurants = (userId: string | null) => {
 
 // Mutation para crear perfil de usuario
 export const useCreateUserProfile = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (params: {
@@ -96,7 +96,6 @@ export const useCreateUserProfile = () => {
 
 // Mutation para actualizar perfil
 export const useUpdateUserProfile = () => {
-  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (params: {

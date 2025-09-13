@@ -1,7 +1,8 @@
 // src/components/admin/SessionsManager.tsx
+import { queryClient } from "@/src/lib/queryClient";
 import { supabase } from "@/src/lib/supabase";
 import { ActiveSession } from "@/src/types";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
 import { ScrollView, View } from "react-native";
 import { Button, Card, Chip, Text } from "react-native-paper";
@@ -11,7 +12,6 @@ export default function SessionsManager({
 }: {
   restaurantId: string;
 }) {
-  const queryClient = useQueryClient();
 
   // Obtener sesiones activas
   const { data: sessions, isLoading } = useQuery({

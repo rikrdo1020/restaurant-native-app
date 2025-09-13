@@ -1,8 +1,8 @@
 import React from "react";
 import { View } from "react-native";
-import { Card, Text, Button, IconButton, TextInput } from "react-native-paper";
-import { MenuItem } from "../lib/supabase";
+import { Button, Card, IconButton, Text, TextInput } from "react-native-paper";
 import { useCart } from "../hooks/useCart";
+import { MenuItem } from "../types";
 
 interface Props {
   item: MenuItem;

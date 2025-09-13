@@ -1,4 +1,3 @@
-import { useAuth } from "@/src/hooks/useAuth";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
@@ -6,19 +5,10 @@ import { Button, Card, Text } from "react-native-paper";
 
 export default function LandingPage() {
   const router = useRouter();
-  const { user } = useAuth();
 
   const handleRegister = () => {
     try {
       router.push("/auth/register");
-    } catch (error) {
-      console.error("🔥 Error en navegación:", error);
-    }
-  };
-
-  const handleLogin = () => {
-    try {
-      router.push("/auth/login");
     } catch (error) {
       console.error("🔥 Error en navegación:", error);
     }
@@ -56,15 +46,6 @@ export default function LandingPage() {
             labelStyle={styles.buttonLabel}
           >
             Comenzar Gratis
-          </Button>
-          <Button
-            mode="outlined"
-            onPress={handleLogin}
-            style={styles.secondaryButton}
-            contentStyle={styles.buttonContent}
-            labelStyle={styles.buttonLabel}
-          >
-            Iniciar Sesión
           </Button>
         </View>
       </View>

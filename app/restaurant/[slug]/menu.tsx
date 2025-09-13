@@ -6,9 +6,11 @@ import { useMenu, useRestaurant } from "../../../src/hooks/useApi";
 import { useCart } from "../../../src/hooks/useCart";
 
 export default function MenuScreen() {
-  const { restaurantId } = useLocalSearchParams<{ restaurantId: string }>();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
   const router = useRouter();
-  const { data: restaurant } = useRestaurant(restaurantId);
+  const { data: restaurant } = useRestaurant(slug);
+  const { data: categories, isLoading, error } = useMenu(restaurant?.id || "");
+  const { addItem, getItemCount } = useCart();
 
   if (!restaurant) {
     return (
@@ -17,9 +19,6 @@ export default function MenuScreen() {
       </View>
     );
   }
-
-  const { data: categories, isLoading, error } = useMenu(restaurant?.id);
-  const { addItem, getItemCount } = useCart();
 
   if (isLoading) {
     return (
@@ -90,7 +89,7 @@ export default function MenuScreen() {
         <View style={styles.cartButton}>
           <Button
             mode="contained"
-            onPress={() => router.push("/cart" as any)}
+            onPress={() => router.push(`/restaurant/${slug}/cart` as any)}
             style={{ backgroundColor: "#ff6347" }}
             contentStyle={{ paddingVertical: 8 }}
           >
