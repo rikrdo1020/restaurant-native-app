@@ -1,7 +1,7 @@
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Platform, View } from "react-native";
-import { ActivityIndicator, IconButton } from "react-native-paper";
+import { View } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { useAuth } from "../../src/hooks/useAuth";
 
 export default function AdminLayout() {
@@ -37,22 +37,7 @@ export default function AdminLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor: "#ffffff",
-        },
-        headerTintColor: "#292929",
-        headerTitleStyle: {
-          fontWeight: "bold",
-        },
-        headerLeft: () => (
-          <IconButton
-            icon="arrow-left"
-            iconColor="#2e2e2e"
-            size={24}
-            onPress={handleBack}
-            style={{ marginLeft: Platform.OS === "ios" ? 4 : -8 }}
-          />
-        ),
+        headerShown: false,
       }}
     >
       <Stack.Screen
@@ -60,10 +45,7 @@ export default function AdminLayout() {
         options={{ title: "Panel de Administración" }}
       />
       <Stack.Screen name="menu/index" options={{ title: "Gestión de Menú" }} />
-      <Stack.Screen
-        name="restaurant/settings"
-        options={{ title: "Configuración" }}
-      />
+      <Stack.Screen name="settings" options={{ title: "Configuración" }} />
     </Stack>
   );
 }

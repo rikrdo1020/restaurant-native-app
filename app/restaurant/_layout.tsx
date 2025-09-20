@@ -5,12 +5,10 @@ export default function RestaurantLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        // ✅ Configuración para transiciones suaves
         animation: "slide_from_right",
         gestureEnabled: true,
       }}
     >
-      {/* ✅ Rutas dinámicas del restaurante */}
       <Stack.Screen
         name="[slug]"
         options={{

@@ -285,3 +285,16 @@ export function useConfirmOrder() {
     },
   });
 }
+export function usePrepareOrder() {
+  return useMutation({
+    mutationFn: async (vars: ConfirmOrderVars) => {
+      const { data, error } = await supabase.rpc("prepare_order", vars);
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["order-stats"] });
+    },
+  });
+}

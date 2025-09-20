@@ -54,7 +54,6 @@ export default function CartScreen() {
     <View style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         <View style={{ padding: 16 }}>
-          {/* Header */}
           <View style={{ marginBottom: 24 }}>
             <Text variant="headlineSmall" style={{ marginBottom: 8 }}>
               Mi Pedido
@@ -65,7 +64,6 @@ export default function CartScreen() {
             </Text>
           </View>
 
-          {/* Items del carrito */}
           <View style={{ marginBottom: 24 }}>
             {items.map((item, index) => (
               <View key={`${item.menu_item_id}-${index}`}>
@@ -77,10 +75,8 @@ export default function CartScreen() {
             ))}
           </View>
 
-          {/* Resumen del pedido */}
           <OrderSummary subtotal={total} total={total} itemCount={itemCount} />
 
-          {/* Botón limpiar carrito */}
           <Button
             mode="outlined"
             onPress={clearCart}
@@ -93,12 +89,10 @@ export default function CartScreen() {
             Limpiar Pedido
           </Button>
 
-          {/* Espacio para el FAB */}
           <View style={{ height: 100 }} />
         </View>
       </ScrollView>
 
-      {/* FAB para continuar */}
       <FAB
         icon="arrow-right"
         label={`Continuar • $${total.toFixed(2)}`}

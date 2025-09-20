@@ -154,7 +154,6 @@ export default function RegisterScreen() {
                 isSubmitting,
               }) => (
                 <View style={styles.form}>
-                  {/* Nombre */}
                   <TextInput
                     label="Nombre *"
                     value={values.firstName}
@@ -172,7 +171,6 @@ export default function RegisterScreen() {
                     {errors.firstName}
                   </HelperText>
 
-                  {/* Apellido */}
                   <TextInput
                     label="Apellido *"
                     value={values.lastName}
@@ -190,7 +188,6 @@ export default function RegisterScreen() {
                     {errors.lastName}
                   </HelperText>
 
-                  {/* Email */}
                   <TextInput
                     label="Email *"
                     value={values.email}
@@ -209,7 +206,6 @@ export default function RegisterScreen() {
                     {errors.email}
                   </HelperText>
 
-                  {/* Teléfono */}
                   <TextInput
                     label="Teléfono"
                     value={values.phone}
@@ -228,7 +224,6 @@ export default function RegisterScreen() {
                     {errors.phone}
                   </HelperText>
 
-                  {/* Contraseña */}
                   <TextInput
                     label="Contraseña *"
                     value={values.password}
@@ -253,7 +248,6 @@ export default function RegisterScreen() {
                     {errors.password}
                   </HelperText>
 
-                  {/* Confirmar Contraseña */}
                   <TextInput
                     label="Confirmar Contraseña *"
                     value={values.confirmPassword}
@@ -282,7 +276,6 @@ export default function RegisterScreen() {
                     {errors.confirmPassword}
                   </HelperText>
 
-                  {/* Información de seguridad */}
                   <View style={styles.passwordInfo}>
                     <Text variant="bodySmall" style={styles.passwordInfoText}>
                       La contraseña debe contener:
@@ -298,7 +291,6 @@ export default function RegisterScreen() {
                     </Text>
                   </View>
 
-                  {/* Botón de registro */}
                   <Button
                     mode="contained"
                     onPress={() => handleSubmit()}
@@ -320,7 +312,6 @@ export default function RegisterScreen() {
 
         <Divider style={styles.divider} />
 
-        {/* Link para login */}
         <View style={styles.loginLink}>
           <Text variant="bodyMedium">¿Ya tienes cuenta? </Text>
           <Link href={"/auth/login" as any} asChild>
@@ -331,7 +322,6 @@ export default function RegisterScreen() {
         </View>
       </ScrollView>
 
-      {/* Snackbar para mensajes */}
       <Snackbar
         visible={snackbar.visible}
         onDismiss={() => setSnackbar({ ...snackbar, visible: false })}

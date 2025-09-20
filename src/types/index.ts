@@ -122,7 +122,6 @@ export interface CreateOrderRequest {
 export type ConfirmOrderVars = {
   p_order_id: string;
   p_code: string;
-  p_staff_user_id: string;
   p_table_number?: string | null;
 };
 

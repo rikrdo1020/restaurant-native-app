@@ -90,7 +90,6 @@ export function CartItem({ item }: Props) {
           </View>
         </View>
 
-        {/* Controles de cantidad y notas */}
         <View
           style={{
             flexDirection: "row",
@@ -99,7 +98,6 @@ export function CartItem({ item }: Props) {
             marginTop: 12,
           }}
         >
-          {/* Control de cantidad */}
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <IconButton
               icon="minus"
@@ -127,7 +125,6 @@ export function CartItem({ item }: Props) {
             />
           </View>
 
-          {/* Botón de notas */}
           <IconButton
             icon="note-text"
             size={20}
@@ -136,7 +133,6 @@ export function CartItem({ item }: Props) {
           />
         </View>
 
-        {/* Campo de notas */}
         {showNotes && (
           <TextInput
             label="Notas especiales"

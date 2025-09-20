@@ -377,7 +377,6 @@ export default function OrdersPage() {
         </ScrollView>
       )}
 
-      {/* FAB para nueva orden */}
       <FAB
         icon="plus"
         style={styles.fab}
@@ -386,7 +385,6 @@ export default function OrdersPage() {
         }}
       />
 
-      {/* Snackbar para notificaciones */}
       <Snackbar
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}

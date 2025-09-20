@@ -84,7 +84,6 @@ export default function MenuScreen() {
         ))}
       </ScrollView>
 
-      {/* Botón flotante del carrito */}
       {cartItemCount > 0 && (
         <View style={styles.cartButton}>
           <Button

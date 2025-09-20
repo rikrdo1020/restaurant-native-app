@@ -24,7 +24,6 @@ export default function LandingPage() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Hero Section */}
       <View style={styles.hero}>
         <Text variant="displayMedium" style={styles.heroTitle}>
           RestaurantApp
@@ -50,7 +49,6 @@ export default function LandingPage() {
         </View>
       </View>
 
-      {/* Features Section */}
       <View style={styles.section}>
         <Text variant="headlineMedium" style={styles.sectionTitle}>
           ¿Por qué elegir RestaurantApp?
@@ -93,7 +91,6 @@ export default function LandingPage() {
         </View>
       </View>
 
-      {/* Pricing Preview */}
       <View style={styles.section}>
         <Text variant="headlineMedium" style={styles.sectionTitle}>
           Planes Simples y Transparentes
@@ -129,7 +126,6 @@ export default function LandingPage() {
         </View>
       </View>
 
-      {/* CTA Section */}
       <View style={styles.ctaSection}>
         <Text variant="headlineMedium" style={styles.ctaTitle}>
           ¿Listo para digitalizar tu restaurante?
@@ -152,7 +148,6 @@ export default function LandingPage() {
         </Pressable>
       </View>
 
-      {/* Demo Link */}
       <View style={styles.demoSection}>
         <Text variant="bodyMedium" style={styles.demoText}>
           ¿Quieres ver cómo funciona?

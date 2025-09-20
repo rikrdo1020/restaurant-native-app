@@ -1,5 +1,5 @@
 import WebQrScanner from "@/src/components/WebQrScanner";
-import { useConfirmOrder } from "@/src/hooks/useOrders";
+import { usePrepareOrder } from "@/src/hooks/useOrders";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ import {
 
 export default function NewOrderPage() {
   const router = useRouter();
-  const confirmMutation = useConfirmOrder();
+  const prepareMutation = usePrepareOrder();
 
   const [mode, setMode] = useState<"menu" | "manual" | "scanner">("menu");
   const [scannedData, setScannedData] = useState<{
@@ -55,13 +55,12 @@ export default function NewOrderPage() {
     handleQrResult(data);
   };
 
-  const handleConfirm = async () => {
+  const handlePrepare = async () => {
     if (!scannedData) return;
     try {
-      await confirmMutation.mutateAsync({
+      await prepareMutation.mutateAsync({
         p_order_id: scannedData.orderId,
         p_code: scannedData.code,
-        p_staff_user_id: "STAFF-UUID-AQUI",
         p_table_number: tableNumber || null,
       });
       setSnackbarMessage("Orden confirmada");
@@ -143,11 +142,11 @@ export default function NewOrderPage() {
 
               <Button
                 mode="contained"
-                onPress={handleConfirm}
-                loading={confirmMutation.isPending}
+                onPress={handlePrepare}
+                loading={prepareMutation.isPending}
                 style={{ marginBottom: 12 }}
               >
-                Confirmar orden
+                Preparar orden
               </Button>
               <Button mode="outlined" onPress={() => setScannedData(null)}>
                 Escanear otro
@@ -203,11 +202,11 @@ export default function NewOrderPage() {
 
             <Button
               mode="contained"
-              onPress={handleConfirm}
-              loading={confirmMutation.isPending}
+              onPress={handlePrepare}
+              loading={prepareMutation.isPending}
               style={{ marginBottom: 12 }}
             >
-              Confirmar orden
+              Preparar orden
             </Button>
             <Button mode="outlined" onPress={() => setScannedData(null)}>
               Escanear otro

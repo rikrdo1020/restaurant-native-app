@@ -10,25 +10,26 @@ import { ActivityIndicator, Button, Card, Text } from "react-native-paper";
 export default function DashboardScreen() {
   const router = useRouter();
   const { user } = useAuthProvider();
-  const { data: userRestaurantsData, isLoading: userRestaurantsLoading } = useUserRestaurants(user?.id || "");
+  const { data: userRestaurantsData, isLoading: userRestaurantsLoading } =
+    useUserRestaurants(user?.id || "");
 
   const { data: ordersData } = useOrders({
-    status: "pending"
-  })
-  const { data: ordersStatsData, isLoading: isOrdersLoading } = useOrdersStats();
+    status: "pending",
+  });
+  const { data: ordersStatsData, isLoading: isOrdersLoading } =
+    useOrdersStats();
   const { data: menuData, isLoading: isLoadingMenu } = useMenuItems();
 
-  if (isOrdersLoading || isLoadingMenu || userRestaurantsLoading) return <ActivityIndicator style={{ margin: 16 }} />;
+  if (isOrdersLoading || isLoadingMenu || userRestaurantsLoading)
+    return <ActivityIndicator style={{ margin: 16 }} />;
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.content}>
-
         <Text variant="bodyLarge" style={styles.subtitle}>
           Bienvenido de vuelta,
         </Text>
 
-        {/* Stats Cards */}
         <View style={styles.statsGrid}>
           <Card style={styles.statCard}>
             <Card.Content>
@@ -58,7 +59,6 @@ export default function DashboardScreen() {
           </Card>
         </View>
 
-        {/* Quick Actions */}
         <View style={styles.section}>
           <Text variant="headlineSmall" style={styles.sectionTitle}>
             Acciones Rápidas
@@ -100,7 +100,6 @@ export default function DashboardScreen() {
           </View>
         </View>
 
-        {/* Recent Orders */}
         <View style={styles.section}>
           <Text variant="headlineSmall" style={styles.sectionTitle}>
             Pedidos Recientes
@@ -112,18 +111,19 @@ export default function DashboardScreen() {
             </Text>
           )}
 
-          {ordersData?.map(order => (
+          {ordersData?.map((order) => (
             <Card key={order.id} style={styles.orderCard}>
               <Card.Content>
                 <Text variant="titleMedium">Pedido {order.id}</Text>
-                <Text variant="bodyMedium">Mesa {order.table_number} • ${order.total_amount} • Hace 5 min</Text>
+                <Text variant="bodyMedium">
+                  Mesa {order.table_number} • ${order.total_amount} • Hace 5 min
+                </Text>
               </Card.Content>
             </Card>
           ))}
         </View>
       </ScrollView>
 
-      {/* Preview Restaurant Button */}
       {/* <FAB
         icon="eye"
         label="Ver Restaurante"

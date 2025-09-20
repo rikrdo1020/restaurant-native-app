@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Text, Card, Divider } from "react-native-paper";
+import { Card, Divider, Text } from "react-native-paper";
 
 interface Props {
   subtotal: number;
@@ -29,7 +29,6 @@ export function OrderSummary({
           Resumen del Pedido
         </Text>
 
-        {/* Línea de productos */}
         <View
           style={{
             flexDirection: "row",
@@ -43,7 +42,6 @@ export function OrderSummary({
           <Text variant="bodyMedium">${subtotal.toFixed(2)}</Text>
         </View>
 
-        {/* Impuestos (si aplica) */}
         {tax > 0 && (
           <View
             style={{
@@ -57,7 +55,6 @@ export function OrderSummary({
           </View>
         )}
 
-        {/* Delivery (si aplica) */}
         {delivery > 0 && (
           <View
             style={{
@@ -71,7 +68,6 @@ export function OrderSummary({
           </View>
         )}
 
-        {/* Descuento (si aplica) */}
         {discount > 0 && (
           <View
             style={{
@@ -91,7 +87,6 @@ export function OrderSummary({
 
         <Divider style={{ marginVertical: 12 }} />
 
-        {/* Total */}
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text variant="titleMedium" style={{ fontWeight: "bold" }}>
             Total
@@ -104,7 +99,6 @@ export function OrderSummary({
           </Text>
         </View>
 
-        {/* Nota sobre el servicio */}
         <Text
           variant="bodySmall"
           style={{

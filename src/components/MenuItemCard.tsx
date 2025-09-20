@@ -77,7 +77,6 @@ export function MenuItemCard({ item, onAddToCart }: Props) {
             )}
           </View>
 
-          {/* Imagen placeholder */}
           <View
             style={{
               width: 80,
@@ -92,7 +91,6 @@ export function MenuItemCard({ item, onAddToCart }: Props) {
           </View>
         </View>
 
-        {/* Controles de cantidad */}
         <View
           style={{
             flexDirection: "row",
@@ -138,7 +136,6 @@ export function MenuItemCard({ item, onAddToCart }: Props) {
           </View>
         </View>
 
-        {/* Campo de notas */}
         {showNotes && (
           <TextInput
             label="Notas especiales (opcional)"
